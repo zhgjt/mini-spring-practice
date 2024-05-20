@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="basebaseservice" class="org.example.service.BaseBaseService">
+        <property type="org.example.service.AServiceImpl" name="as" ref="aService"></property>
+    </bean>
+    <bean id="aService" class="org.example.service.AServiceImpl">
+        <constructor-arg type="String" name="name" value="abc"></constructor-arg>
+        <constructor-arg type="int" name="level" value="3"></constructor-arg>
+        <property type="String" name="property1" value="Someone says"></property>
+        <property type="String" name="property2" value="Hello World!"></property>
+        <property type="org.example.service.BaseService" name="ref1" ref="baseservice"></property>
+    </bean>
+    <bean id="baseservice" class="org.example.service.BaseService">
+        <property type="org.example.service.BaseBaseService" name="bbs" ref="basebaseservice"></property>
+    </bean>
+    <bean id="handlerAdapter" class="org.example.web.method.annotation.RequestMappingHandlerAdapter">
+        <property type="org.example.http.converter.HttpMessageConverter" name="messageConverter"
+                  ref="messageConverter"></property>
+    </bean>
+    <bean id="messageConverter" class="org.example.http.converter.DefaultHttpMessageConverter">
+        <property type="org.example.util.ObjectMapper" name="objectMapper" ref="objectMapper"></property>
+    </bean>
+    <bean id="objectMapper" class="org.example.util.DefaultObjectMapper">
+        <property type="String" name="dateFormat" value="yyyy/MM/dd"></property>
+        <property type="String" name="decimalFormat" value="###.##"></property>
+    </bean>
+    <bean id="viewResolver" class="org.example.web.servlet.view.InternalResourceViewResolver">
+        <property type="String" name="viewClassName" value="org.example.web.servlet.view.JstlView"></property>
+        <property type="String" name="prefix" value="/WEB-INF/"></property>
+        <property type="String" name="suffix" value=".jsp"></property>
+    </bean>
+    <bean id="jdbcTemplate" class="org.example.jdbc.core.JdbcTemplate">
+        <property type="javax.sql.DataSource" name="dataSource" ref="dataSource"></property>
+    </bean>
+    <bean id="dataSource" class="org.example.jdbc.pool.PooledDataSource">
+        <property type="String" name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+        <property type="String" name="url" value="jdbc:sqlserver://localhost:3306;databasename=test;"></property>
+        <property type="String" name="username" value="root"></property>
+        <property type="String" name="password" value="13271754489zz"></property>
+        <property type="int" name="initialSize" value="3"></property>
+    </bean>
+    <bean id="sqlSessionFactory" class="org.example.batis.DefaultSqlSessionFactory" init-method="init">
+        <property type="String" name="mapperLocations" value="mapper"></property>
+    </bean>
+    <bean id="userService" class="org.example.service.UserService"></bean>
+</beans>
